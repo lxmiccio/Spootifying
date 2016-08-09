@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-xs-5 col-xs-offset-3">
+    <input type="text" class="form-control" placeholder="User..." ng-model="ctrl.user"/>
+  </div>
+  <div class="col-xs-1">
+    <button type="button" class="btn btn-primary" ng-click="ctrl.getTopTracks(ctrl.user)">Top Tracks</button>
+  </div>
+</div>
+
+<div class="row br-lg"></div>
+<div class="row br-lg"></div>
+
+<div class="row" ng-if="ctrl.showTopTracks">
+  <div class="col-xs-12">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="text-center col-xs-1">Rank</th>
+          <th class="text-center col-xs-2">Artist</th>
+          <th class="text-center col-xs-3">Track</th>
+          <th class="text-center col-xs-2">Playcount</th>
+          <th class="text-center col-xs-2">Return [$]</th>
+          <th class="text-center col-xs-2">Return [€]</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="track in ctrl.tracks">
+          <td class="text-center col-xs-1">{{track.rank}}</td>
+          <td class="text-center col-xs-2"><a ng-href="{{track.artist.url}}">{{track.artist.name}}</a></td>
+          <td class="text-center col-xs-3"><a ng-href="{{track.track.url}}">{{track.track.name}}</a></td>
+          <td class="text-center col-xs-2">{{track.playcount}}</td>
+          <td class="text-center col-xs-2">{{track.dollars}}</td>
+          <td class="text-center col-xs-2">{{track.euros}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

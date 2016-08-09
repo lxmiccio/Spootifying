@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="it" ng-app="spootifying" ng-controller="IndexController as index">
+<head>
+  <base href="/">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Spootifying</title>
+
+  <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <link href="css/body.css" rel="stylesheet"/>
+  <link href="css/breaks.css" rel="stylesheet"/>
+
+  <link href="http://fonts.googleapis.com/css?family=Sniglet" rel="stylesheet"/>
+
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="bower_components/lodash/dist/lodash.min.js"></script>
+  <script src="bower_components/angular-route/angular-route.min.js"></script>
+
+  <script src="js/app.js"></script>
+
+  <script src="js/controllers/module.js"></script>
+  <script src="js/controllers/index.js"></script>
+  <script src="js/controllers/user.js"></script>
+
+  <script src="js/filters/module.js"></script>
+  <script src="js/filters/dollarsToEuros.js"></script>
+  <script src="js/filters/secondsToMinutes.js"></script>
+
+  <script src="js/services/module.js"></script>
+  <script src="js/services/api.js"></script>
+  <script src="js/services/user.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row br-lg"></div>
+
+    <div ng-view></div>
+
+    <div class="row br-lg"></div>
+  </div>
+</body>
+</html>
