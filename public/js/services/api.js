@@ -1,7 +1,7 @@
 angular.module('myServices').factory('apiService', function($http) {
 
-  function getKey(onSuccess, onError) {
-    $http.get('api/key').then(function(response) {
+  function getLastFmKey(onSuccess, onError) {
+    $http.get('api/keys/lastfm').then(function(response) {
       onSuccess(response);
     }, function(response) {
       onError(response);
@@ -9,7 +9,7 @@ angular.module('myServices').factory('apiService', function($http) {
   };
 
   return {
-    getKey: getKey
+    getLastFmKey: getLastFmKey
   };
 
 });

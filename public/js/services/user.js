@@ -1,15 +1,10 @@
-angular.module('myServices').factory('userService', function($http, apiService) {
+angular.module('myServices').factory('userService', function($http) {
 
-  function getTopTracks(username, onSuccess, onError) {
-    apiService.getKey(function(response) {
-      var key = response.data;
-      $http.get('http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=' + username + '&api_key=' + key + '&format=json').then(function(response) {
-        onSuccess(response);
-      }, function(response) {
-        onError(response);
-      });
+  function getTopTracks(key, user, onSuccess, onError) {
+    $http.get('http://ws.audioscrobbler.com/2.0/?method=user.gettoptracks&user=' + user + '&api_key=' + key + '&format=json').then(function(response) {
+      onSuccess(response);
     }, function(response) {
-      console.log(response);
+      onError(response);
     });
   };
 

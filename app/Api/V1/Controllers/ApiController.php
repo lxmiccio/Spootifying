@@ -9,8 +9,16 @@ class ApiController extends Controller
 {
   use Helpers;
 
-  public function key()
+  public function lastfm()
   {
-    return env('SPOTIFY_API');
+    return env('LAST_FM_API');
+  }
+
+  public function spotify()
+  {
+    return [
+      'client_id' => env('SPOTIFY_CLIENT_ID'),
+      'secret' => env('SPOTIFY_SECRET')
+    ];
   }
 }
