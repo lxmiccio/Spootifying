@@ -1,45 +1,142 @@
 <div class="row">
-  <div class="col-md-5 col-md-offset-3 col-sm-7 col-sm-offset-2 col-xs-9 col-xs-offset-1">
+  <div class="col-md-5 col-md-offset-3 col-sm-7 col-sm-offset-2 col-xs-7 col-xs-offset-1">
     <input type="text" class="form-control" placeholder="Last.fm User..." ng-model="ctrl.user"/>
   </div>
-  <div class="col-xs-1">
-    <button type="button" class="btn btn-primary" ng-click="ctrl.getTopTracks(ctrl.user)">Search</button>
+  <div class="col-md-1 col-sm-1 col-xs-3">
+    <div class="text-right">
+      <button type="button" class="btn btn-primary" ng-click="ctrl.getTopTracks(ctrl.user)">Search</button>
+    </div>
   </div>
 </div>
 
 <div class="row br-xs"></div>
 
 <div class="row">
-  <div class="col-md-5 col-md-offset-3 col-sm-7 col-sm-offset-2 col-xs-9 col-xs-offset-1">
-    <p>N.B. Spotify APIs does not allow users to get the playcount of the tracks. To use this page you have to get a Last.fm account and link it with your account of Spotify</p>
+  <div class="col-md-5 col-md-offset-3 col-sm-7 col-sm-offset-2 col-xs-10 col-xs-offset-1">
+    <p style="font-size: 12px;">N.B. Spotify APIs does not allow users to get the playcount of the tracks. To use this page you have to get a Last.fm account and link it with your account of Spotify.</p>
   </div>
 </div>
 
 <div class="row br-lg"></div>
 
-<div class="row">
+<div class="row" ng-if="ctrl.showTracks">
+  <div class="col-xs-12">
+    <h3 class="text-center"><label>Tracks</label></h3>
+  </div>
   <div class="col-xs-12">
     <table class="table table-striped">
       <thead>
         <tr>
-          <th class="text-center col-xs-1">Rank</th>
-          <th class="text-center col-xs-2">Artist</th>
-          <th class="text-center col-xs-2">Album</th>
-          <th class="text-center col-xs-2">Track</th>
+          <th class="text-center col-xs-1 hidden-xs">Rank</th>
+          <th class="text-center col-xs-2 hidden-xs">Artist</th>
+          <th class="text-center col-xs-3 visible-xs">Artist</th>
+          <th class="text-center col-xs-2 hidden-xs">&nbsp;Album&nbsp;</th>
+          <th class="text-center col-xs-3 visible-xs">&nbsp;Album&nbsp;</th>
+          <th class="text-center col-xs-2 hidden-xs">&nbsp;Track&nbsp;</th>
+          <th class="text-center col-xs-3 visible-xs">&nbsp;Track&nbsp;</th>
           <th class="text-center col-xs-1">Playcount</th>
-          <th class="text-center col-xs-2">Return [$]</th>
-          <th class="text-center col-xs-2">Return [€]</th>
+          <th class="text-center col-xs-2 hidden-xs">Return [$]</th>
+          <th class="text-center col-xs-2 hidden-xs">Return [€]</th>
+          <th class="text-center col-xs-2 visible-xs">Return</th>
         </tr>
       </thead>
       <tbody>
         <tr ng-repeat="track in ctrl.tracks | orderBy:'playcount':true">
-          <td class="text-center col-xs-1">{{$index + 1}}</td>
-          <td class="text-center col-xs-2"><a ng-href="{{track.artist.url}}">{{track.artist.name}}</a></td>
-          <td class="text-center col-xs-2"><a ng-href="{{track.album.url}}">{{track.album.name}}</a></td>
-          <td class="text-center col-xs-2"><a ng-href="{{track.url}}">{{track.name}}</a></td>
+          <td class="text-center col-xs-1 hidden-xs">{{$index + 1}}</td>
+          <td class="text-center col-xs-2 hidden-xs"><a ng-href="{{track.artist.url}}">{{track.artist.name}}</a></td>
+          <td class="text-center col-xs-3 visible-xs"><a ng-href="{{track.artist.url}}">{{track.artist.name}}</a></td>
+          <td class="text-center col-xs-2 hidden-xs"><a ng-href="{{track.album.url}}">{{track.album.name}}</a></td>
+          <td class="text-center col-xs-3 visible-xs"><a ng-href="{{track.album.url}}">{{track.album.name}}</a></td>
+          <td class="text-center col-xs-2 hidden-xs"><a ng-href="{{track.url}}">{{track.name}}</a></td>
+          <td class="text-center col-xs-3 visible-xs"><a ng-href="{{track.url}}">{{track.name}}</a></td>
           <td class="text-center col-xs-1">{{track.playcount}}</td>
-          <td class="text-center col-xs-2">{{track.return.dollars}}</td>
-          <td class="text-center col-xs-2">{{track.return.euros}}</td>
+          <td class="text-center col-xs-2 hidden-xs">{{track.return.dollars | currency:"$"}}</td>
+          <td class="text-center col-xs-2 hidden-xs">{{track.return.euros | currency:"€"}}</td>
+          <td class="text-center col-xs-2 visible-xs">{{track.return.dollars | currency:"$"}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row br-lg"></div>
+
+<div class="row" ng-if="ctrl.showAlbums">
+  <div class="col-xs-12">
+    <h3 class="text-center"><label>Albums</label></h3>
+  </div>
+  <div class="col-xs-12">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="text-center col-xs-1 hidden-xs">Rank</th>
+          <th class="text-center col-xs-2 hidden-xs">Artist</th>
+          <th class="text-center col-xs-3 visible-xs">Artist</th>
+          <th class="text-center col-xs-2 hidden-xs">&nbsp;Album&nbsp;</th>
+          <th class="text-center col-xs-3 visible-xs">&nbsp;Album&nbsp;</th>
+          <th class="text-center col-xs-2 hidden-xs">Tracks</th>
+          <th class="text-center col-xs-3 visible-xs">Tracks</th>
+          <th class="text-center col-xs-1">Playcount</th>
+          <th class="text-center col-xs-2 hidden-xs">Return [$]</th>
+          <th class="text-center col-xs-2 hidden-xs">Return [€]</th>
+          <th class="text-center col-xs-2 visible-xs">Return</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="album in ctrl.albums | orderBy:'playcount':true">
+          <td class="text-center col-xs-1 hidden-xs">{{$index + 1}}</td>
+          <td class="text-center col-xs-2 hidden-xs"><a ng-href="{{album.artist.url}}">{{album.artist.name}}</a></td>
+          <td class="text-center col-xs-3 visible-xs"><a ng-href="{{album.artist.url}}">{{album.artist.name}}</a></td>
+          <td class="text-center col-xs-2 hidden-xs"><a ng-href="{{album.url}}">{{album.name}}</a></td>
+          <td class="text-center col-xs-3 visible-xs"><a ng-href="{{album.url}}">{{album.name}}</a></td>
+          <td class="text-center col-xs-2 hidden-xs">{{album.tracks.length}}</td>
+          <td class="text-center col-xs-3 visible-xs">{{album.tracks.length}}</td>
+          <td class="text-center col-xs-1">{{album.playcount}}</td>
+          <td class="text-center col-xs-2 hidden-xs">{{album.return.dollars | currency:"$"}}</td>
+          <td class="text-center col-xs-2 hidden-xs">{{album.return.euros | currency:"€"}}</td>
+          <td class="text-center col-xs-2 visible-xs">{{album.return.dollars | currency:"$"}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row br-lg"></div>
+
+<div class="row" ng-if="ctrl.showArtists">
+  <div class="col-xs-12">
+    <h3 class="text-center"><label>Artists</label></h3>
+  </div>
+  <div class="col-xs-12">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="text-center col-xs-1 hidden-xs">Rank</th>
+          <th class="text-center col-xs-2 hidden-xs">Artist</th>
+          <th class="text-center col-xs-3 visible-xs">Artist</th>
+          <th class="text-center col-xs-2 hidden-xs">Albums</th>
+          <th class="text-center col-xs-3 visible-xs">Albums</th>
+          <th class="text-center col-xs-2 hidden-xs">Tracks</th>
+          <th class="text-center col-xs-3 visible-xs">Tracks</th>
+          <th class="text-center col-xs-1">Playcount</th>
+          <th class="text-center col-xs-2 hidden-xs">Return [$]</th>
+          <th class="text-center col-xs-2 hidden-xs">Return [€]</th>
+          <th class="text-center col-xs-2 visible-xs">Return</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="artist in ctrl.artists | orderBy:'playcount':true">
+          <td class="text-center col-xs-1 hidden-xs">{{$index + 1}}</td>
+          <td class="text-center col-xs-2 hidden-xs"><a ng-href="{{artist.url}}">{{artist.name}}</a></td>
+          <td class="text-center col-xs-3 visible-xs"><a ng-href="{{artist.url}}">{{artist.name}}</a></td>
+          <td class="text-center col-xs-2 hidden-xs">{{artist.albums.length}}</td>
+          <td class="text-center col-xs-3 visible-xs">{{artist.albums.length}}</td>
+          <td class="text-center col-xs-2 hidden-xs">{{artist.tracks.length}}</td>
+          <td class="text-center col-xs-3 visible-xs">{{artist.tracks.length}}</td>
+          <td class="text-center col-xs-1">{{artist.playcount}}</td>
+          <td class="text-center col-xs-2 hidden-xs">{{artist.return.dollars | currency:"$"}}</td>
+          <td class="text-center col-xs-2 hidden-xs">{{artist.return.euros | currency:"€"}}</td>
+          <td class="text-center col-xs-2 visible-xs">{{artist.return.dollars | currency:"$"}}</td>
         </tr>
       </tbody>
     </table>

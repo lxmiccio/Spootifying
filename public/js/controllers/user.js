@@ -1,4 +1,4 @@
-angular.module('myControllers').controller('UserController', function($filter, apiService, trackService, userService) {
+angular.module('myControllers').controller('UserController', function($filter, $q, apiService, trackService, userService) {
 
   var vm  = this;
 
@@ -6,11 +6,13 @@ angular.module('myControllers').controller('UserController', function($filter, a
     apiService.getLastFmKey(function(response) {
 
       userService.getTopTracks(response.data, user, function(response) {
-        vm.albums = [];
-        vm.artists = [];
         vm.tracks = [];
 
+        var promises = [];
+
         angular.forEach(response.data.toptracks.track, function(track, index) {
+          var deferred = $q.defer();
+
           trackService.getInfo(track.artist.name, track.name, function(response) {
             vm.tracks.push({
               id: response.data.tracks.items[0].id,
@@ -28,80 +30,121 @@ angular.module('myControllers').controller('UserController', function($filter, a
               name: response.data.tracks.items[0].name,
               playcount: parseInt(track.playcount),
               return: {
-                dollars: $filter('number')(track.playcount * 0.006),
-                euros: $filter('number')($filter('dollarsToEuros')(track.playcount * 0.006))
+                dollars: parseFloat(track.playcount * 0.006),
+                euros: parseFloat($filter('dollarsToEuros')(track.playcount * 0.006))
               },
               url: response.data.tracks.items[0].external_urls.spotify
             });
 
+            deferred.resolve(response);
+          }, function(response) {
+            console.log(response);
+          });
+
+          promises.push(deferred.promise);
+        });
+
+        $q.all(promises).then(function(responses) {
+          vm.showTracks = true;
+
+          vm.albums = [];
+          vm.artists = [];
+
+          angular.forEach(vm.tracks, function(track) {
             var found = false;
 
             angular.forEach(vm.albums, function(album, index) {
-              if(response.data.tracks.items[0].album.id == album.id) {
+              if(track.album.id == album.id) {
                 found = true;
 
                 vm.albums[index].playcount += parseInt(track.playcount);
-                vm.albums[index].return.dollars = $filter('number')(parseFloat(album.return.dollars) + parseFloat(track.playcount * 0.006));
-                vm.albums[index].return.euros = $filter('number')(parseFloat(album.return.euros) + parseFloat($filter('dollarsToEuros')(track.playcount * 0.006)));
+                vm.albums[index].return.dollars += parseFloat(track.playcount * 0.006);
+                vm.albums[index].return.euros += parseFloat($filter('dollarsToEuros')(track.playcount * 0.006));
                 vm.albums[index].tracks.push({
-                  id: response.data.tracks.items[0].id,
-                  name: response.data.tracks.items[0].name,
-                  url: response.data.tracks.items[0].external_urls.spotify
+                  id: track.id,
+                  name: track.name,
+                  url: track.url
                 });
               }
             });
 
             if(!found) {
               vm.albums.push({
-                id: response.data.tracks.items[0].album.id,
+                id: track.album.id,
                 artist: {
-                  id: response.data.tracks.items[0].artists[0].id,
-                  name: response.data.tracks.items[0].artists[0].name,
-                  url: response.data.tracks.items[0].artists[0].external_urls.spotify
+                  id: track.artist.id,
+                  name: track.artist.name,
+                  url: track.artist.url
                 },
-                name: response.data.tracks.items[0].album.name,
+                name: track.album.name,
                 playcount: parseInt(track.playcount),
                 return: {
-                  dollars: parseFloat($filter('number')(track.playcount * 0.006)),
-                  euros: parseFloat($filter('number')($filter('dollarsToEuros')(track.playcount * 0.006)))
+                  dollars: parseFloat(track.playcount * 0.006),
+                  euros: parseFloat($filter('dollarsToEuros')(track.playcount * 0.006))
                 },
                 tracks: [{
-                  id: response.data.tracks.items[0].id,
-                  name: response.data.tracks.items[0].name,
-                  url: response.data.tracks.items[0].external_urls.spotify
+                  id: track.id,
+                  name: track.name,
+                  url: track.url
                 }],
-                url: response.data.tracks.items[0].album.external_urls.spotify
+                url: track.album.url
               });
             }
 
             found = false;
 
             angular.forEach(vm.artists, function(artist, index) {
-              if(response.data.tracks.items[0].artists[0].id == artist.id) {
+              if(track.artist.id == artist.id) {
                 found = true;
 
-                vm.artists[index].return.dollars = $filter('number')(parseFloat(artist.return.dollars) + parseFloat(track.playcount * 0.006)),
-                vm.artists[index].return.euros = $filter('number')(parseFloat(artist.return.euros) + parseFloat($filter('dollarsToEuros')(track.playcount * 0.006)))
+                vm.artists[index].playcount += parseInt(track.playcount);
+                vm.artists[index].return.dollars += parseFloat(track.playcount * 0.006);
+                vm.artists[index].return.euros += parseFloat($filter('dollarsToEuros')(track.playcount * 0.006));
+                vm.artists[index].tracks.push({
+                  id: track.id,
+                  name: track.name,
+                  url: track.url
+                });
               }
             });
 
             if(!found) {
               vm.artists.push({
-                id: response.data.tracks.items[0].artists[0].id,
-                name: response.data.tracks.items[0].artists[0].name,
+                id: track.artist.id,
+                albums: [],
+                name: track.artist.name,
+                playcount: parseInt(track.playcount),
                 return: {
-                  dollars: parseFloat($filter('number')(track.playcount * 0.006)),
-                  euros: parseFloat($filter('number')($filter('dollarsToEuros')(track.playcount * 0.006)))
+                  dollars: parseFloat(track.playcount * 0.006),
+                  euros: parseFloat($filter('dollarsToEuros')(track.playcount * 0.006))
                 },
-                url: response.data.tracks.items[0].artists[0].external_urls.spotify
+                tracks: [{
+                  id: track.id,
+                  name: track.name,
+                  url: track.url
+                }],
+                url: track.artist.url
               });
             }
-
-            console.log(vm.albums)
-            console.log(vm.artists)
-          }, function(response) {
-            console.log(response);
           });
+
+          vm.showAlbums = true;
+
+          angular.forEach(vm.artists, function(artist, index) {
+            angular.forEach(vm.albums, function(album) {
+              if(artist.id == album.artist.id) {
+                vm.artists[index].albums.push({
+                  id: album.id,
+                  name: album.name,
+                  url: album.url
+                });
+              }
+            });
+          });
+
+          vm.showArtists = true;
+        }, function(response) {
+          console.log(response);
         });
 
       }, function(response) {
