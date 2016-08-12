@@ -42,8 +42,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="track in ctrl.tracks | orderBy:'playcount':true">
-          <td class="text-center col-xs-1 hidden-xs">{{$index + 1}}</td>
+        <tr ng-repeat="track in ctrl.tracksPagination.tracks">
+          <td class="text-center col-xs-1 hidden-xs">{{$index + 1 + ((ctrl.tracksPagination.page - 1) * 15)}}</td>
           <td class="text-center col-xs-2 hidden-xs"><a ng-href="{{track.artist.url}}">{{track.artist.name}}</a></td>
           <td class="text-center col-xs-3 visible-xs"><a ng-href="{{track.artist.url}}">{{track.artist.name}}</a></td>
           <td class="text-center col-xs-2 hidden-xs"><a ng-href="{{track.album.url}}">{{track.album.name}}</a></td>
@@ -58,6 +58,34 @@
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <div class="text-center">
+      <ul class="pagination" ng-if="ctrl.tracksPagination">
+        <li ng-class="{disabled: ctrl.tracksPagination.page == 1}">
+          <a class="hidden-sm hidden-xs" ng-click="ctrl.redirectToTracksPage(1)">Inizio</a>
+          <a class="visible-sm visible-xs" ng-click="ctrl.redirectToTracksPage(1)"><i class="fa fa-fast-backward" aria-hidden="true"></i></a>
+        </li>
+        <li ng-class="{disabled: ctrl.tracksPagination.page == 1}">
+          <a class="hidden-sm hidden-xs" ng-click="ctrl.redirectToTracksPage(ctrl.tracksPagination.page - 1)">Precedente</a>
+          <a class="visible-sm visible-xs" ng-click="ctrl.redirectToTracksPage(ctrl.tracksPagination.page - 1)"><i class="fa fa-backward" aria-hidden="true"></i></a>
+        </li>
+        <li ng-repeat="page in ctrl.tracksPagination.pages" ng-class="{active: ctrl.tracksPagination.page == page}">
+          <a ng-click="ctrl.redirectToTracksPage(page)">{{page}}</a>
+        </li>
+        <li ng-class="{disabled: ctrl.tracksPagination.page == ctrl.tracksPagination.totalPages}">
+          <a class="hidden-sm hidden-xs" ng-click="ctrl.redirectToTracksPage(ctrl.tracksPagination.page - 1 + 2)">Successivo</a>
+          <a class="visible-sm visible-xs" ng-click="ctrl.redirectToTracksPage(ctrl.tracksPagination.page - 1 + 2)"><i class="fa fa-forward" aria-hidden="true"></i></a>
+        </li>
+        <li ng-class="{disabled: ctrl.tracksPagination.page == ctrl.tracksPagination.totalPages}">
+          <a class="hidden-sm hidden-xs" ng-click="ctrl.redirectToTracksPage(ctrl.tracksPagination.totalPages)">Fine</a>
+          <a class="visible-sm visible-xs" ng-click="ctrl.redirectToTracksPage(ctrl.tracksPagination.totalPages)"><i class="fa fa-fast-forward" aria-hidden="true"></i></a>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 
@@ -86,8 +114,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="album in ctrl.albums | orderBy:'playcount':true">
-          <td class="text-center col-xs-1 hidden-xs">{{$index + 1}}</td>
+        <tr ng-repeat="album in ctrl.albumsPagination.albums">
+          <td class="text-center col-xs-1 hidden-xs">{{$index + 1 + ((ctrl.albumsPagination.page - 1) * 15)}}</td>
           <td class="text-center col-xs-2 hidden-xs"><a ng-href="{{album.artist.url}}">{{album.artist.name}}</a></td>
           <td class="text-center col-xs-3 visible-xs"><a ng-href="{{album.artist.url}}">{{album.artist.name}}</a></td>
           <td class="text-center col-xs-2 hidden-xs"><a ng-href="{{album.url}}">{{album.name}}</a></td>
@@ -102,6 +130,34 @@
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <div class="text-center">
+      <ul class="pagination" ng-if="ctrl.albumsPagination">
+        <li ng-class="{disabled: ctrl.albumsPagination.page == 1}">
+          <a class="hidden-sm hidden-xs" ng-click="ctrl.redirectToAlbumsPage(1)">Inizio</a>
+          <a class="visible-sm visible-xs" ng-click="ctrl.redirectToAlbumsPage(1)"><i class="fa fa-fast-backward" aria-hidden="true"></i></a>
+        </li>
+        <li ng-class="{disabled: ctrl.albumsPagination.page == 1}">
+          <a class="hidden-sm hidden-xs" ng-click="ctrl.redirectToAlbumsPage(ctrl.albumsPagination.page - 1)">Precedente</a>
+          <a class="visible-sm visible-xs" ng-click="ctrl.redirectToAlbumsPage(ctrl.albumsPagination.page - 1)"><i class="fa fa-backward" aria-hidden="true"></i></a>
+        </li>
+        <li ng-repeat="page in ctrl.albumsPagination.pages" ng-class="{active: ctrl.albumsPagination.page == page}">
+          <a ng-click="ctrl.redirectToAlbumsPage(page)">{{page}}</a>
+        </li>
+        <li ng-class="{disabled: ctrl.albumsPagination.page == ctrl.albumsPagination.totalPages}">
+          <a class="hidden-sm hidden-xs" ng-click="ctrl.redirectToAlbumsPage(ctrl.albumsPagination.page - 1 + 2)">Successivo</a>
+          <a class="visible-sm visible-xs" ng-click="ctrl.redirectToAlbumsPage(ctrl.albumsPagination.page - 1 + 2)"><i class="fa fa-forward" aria-hidden="true"></i></a>
+        </li>
+        <li ng-class="{disabled: ctrl.albumsPagination.page == ctrl.albumsPagination.totalPages}">
+          <a class="hidden-sm hidden-xs" ng-click="ctrl.redirectToAlbumsPage(ctrl.albumsPagination.totalPages)">Fine</a>
+          <a class="visible-sm visible-xs" ng-click="ctrl.redirectToAlbumsPage(ctrl.albumsPagination.totalPages)"><i class="fa fa-fast-forward" aria-hidden="true"></i></a>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 
@@ -130,8 +186,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="artist in ctrl.artists | orderBy:'playcount':true">
-          <td class="text-center col-xs-1 hidden-xs">{{$index + 1}}</td>
+        <tr ng-repeat="artist in ctrl.artistsPagination.artists">
+          <td class="text-center col-xs-1 hidden-xs">{{$index + 1 + ((ctrl.artistsPagination.page - 1) * 15)}}</td>
           <td class="text-center col-xs-2 hidden-xs"><a ng-href="{{artist.url}}">{{artist.name}}</a></td>
           <td class="text-center col-xs-3 visible-xs"><a ng-href="{{artist.url}}">{{artist.name}}</a></td>
           <td class="text-center col-xs-2 hidden-xs">{{artist.albums.length}}</td>
@@ -146,5 +202,33 @@
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <div class="text-center">
+      <ul class="pagination" ng-if="ctrl.artistsPagination">
+        <li ng-class="{disabled: ctrl.artistsPagination.page == 1}">
+          <a class="hidden-sm hidden-xs" ng-click="ctrl.redirectToArtistsPage(1)">Inizio</a>
+          <a class="visible-sm visible-xs" ng-click="ctrl.redirectToArtistsPage(1)"><i class="fa fa-fast-backward" aria-hidden="true"></i></a>
+        </li>
+        <li ng-class="{disabled: ctrl.artistsPagination.page == 1}">
+          <a class="hidden-sm hidden-xs" ng-click="ctrl.redirectToArtistsPage(ctrl.artistsPagination.page - 1)">Precedente</a>
+          <a class="visible-sm visible-xs" ng-click="ctrl.redirectToArtistsPage(ctrl.artistsPagination.page - 1)"><i class="fa fa-backward" aria-hidden="true"></i></a>
+        </li>
+        <li ng-repeat="page in ctrl.artistsPagination.pages" ng-class="{active: ctrl.artistsPagination.page == page}">
+          <a ng-click="ctrl.redirectToArtistsPage(page)">{{page}}</a>
+        </li>
+        <li ng-class="{disabled: ctrl.artistsPagination.page == ctrl.artistsPagination.totalPages}">
+          <a class="hidden-sm hidden-xs" ng-click="ctrl.redirectToArtistsPage(ctrl.artistsPagination.page - 1 + 2)">Successivo</a>
+          <a class="visible-sm visible-xs" ng-click="ctrl.redirectToArtistsPage(ctrl.artistsPagination.page - 1 + 2)"><i class="fa fa-forward" aria-hidden="true"></i></a>
+        </li>
+        <li ng-class="{disabled: ctrl.artistsPagination.page == ctrl.artistsPagination.totalPages}">
+          <a class="hidden-sm hidden-xs" ng-click="ctrl.redirectToArtistsPage(ctrl.artistsPagination.totalPages)">Fine</a>
+          <a class="visible-sm visible-xs" ng-click="ctrl.redirectToArtistsPage(ctrl.artistsPagination.totalPages)"><i class="fa fa-fast-forward" aria-hidden="true"></i></a>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>

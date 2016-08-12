@@ -1,4 +1,4 @@
-angular.module('myControllers').controller('UserController', function($filter, $q, apiService, trackService, userService) {
+angular.module('myControllers').controller('UserController', function($filter, $q, apiService, paginationService, trackService, userService) {
 
   var vm  = this;
 
@@ -45,6 +45,7 @@ angular.module('myControllers').controller('UserController', function($filter, $
         });
 
         $q.all(promises).then(function(responses) {
+          vm.tracks = $filter('orderBy')(vm.tracks, 'playcount', true);
           vm.showTracks = true;
 
           vm.totalPlaycount = 0;
@@ -131,6 +132,7 @@ angular.module('myControllers').controller('UserController', function($filter, $
             }
           });
 
+          vm.albums = $filter('orderBy')(vm.albums, 'playcount', true);
           vm.showAlbums = true;
 
           angular.forEach(vm.artists, function(artist, index) {
@@ -145,7 +147,12 @@ angular.module('myControllers').controller('UserController', function($filter, $
             });
           });
 
+          vm.artists = $filter('orderBy')(vm.artists, 'playcount', true);
           vm.showArtists = true;
+
+          vm.tracksPagination = paginationService.getTracksPagination(paginationService.paginate(vm.tracks, 15), 1);
+          vm.albumsPagination = paginationService.getAlbumsPagination(paginationService.paginate(vm.albums, 10), 1);
+          vm.artistsPagination = paginationService.getArtistsPagination(paginationService.paginate(vm.artists, 5), 1);
         }, function(response) {
           console.log(response);
         });
@@ -157,6 +164,24 @@ angular.module('myControllers').controller('UserController', function($filter, $
     }, function(response) {
       console.log(response);
     });
+  };
+
+  vm.redirectToTracksPage = function(page) {
+    if(page > 0 && page <= vm.tracksPagination.totalPages) {
+      vm.tracksPagination = paginationService.getTracksPagination(paginationService.paginate(vm.tracks, 15), page);
+    }
+  };
+
+  vm.redirectToAlbumsPage = function(page) {
+    if(page > 0 && page <= vm.albumsPagination.totalPages) {
+      vm.albumsPagination = paginationService.getAlbumsPagination(paginationService.paginate(vm.albums, 10), page);
+    }
+  };
+
+  vm.redirectToArtistsPage = function(page) {
+    if(page > 0 && page <= vm.artistsPagination.totalPages) {
+      vm.artistsPagination = paginationService.getArtistsPagination(paginationService.paginate(vm.artists, 5), page);
+    }
   };
 
 });
