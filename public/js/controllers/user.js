@@ -47,10 +47,13 @@ angular.module('myControllers').controller('UserController', function($filter, $
         $q.all(promises).then(function(responses) {
           vm.showTracks = true;
 
+          vm.totalPlaycount = 0;
           vm.albums = [];
           vm.artists = [];
 
           angular.forEach(vm.tracks, function(track) {
+            vm.totalPlaycount += parseInt(track.playcount);
+
             var found = false;
 
             angular.forEach(vm.albums, function(album, index) {

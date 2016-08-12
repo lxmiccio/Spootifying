@@ -36,7 +36,8 @@
           <th class="text-center col-xs-3 visible-xs">&nbsp;Track&nbsp;</th>
           <th class="text-center col-xs-1">Playcount</th>
           <th class="text-center col-xs-2 hidden-xs">Return [$]</th>
-          <th class="text-center col-xs-2 hidden-xs">Return [€]</th>
+          <th class="text-center col-xs-1 hidden-xs">[€]</th>
+          <th class="text-center col-xs-1 hidden-xs">Percentage</th>
           <th class="text-center col-xs-2 visible-xs">Return</th>
         </tr>
       </thead>
@@ -51,7 +52,8 @@
           <td class="text-center col-xs-3 visible-xs"><a ng-href="{{track.url}}">{{track.name}}</a></td>
           <td class="text-center col-xs-1">{{track.playcount}}</td>
           <td class="text-center col-xs-2 hidden-xs">{{track.return.dollars | currency:"$"}}</td>
-          <td class="text-center col-xs-2 hidden-xs">{{track.return.euros | currency:"€"}}</td>
+          <td class="text-center col-xs-1 hidden-xs">{{track.return.euros | currency:"€"}}</td>
+          <td class="text-center col-xs-1 hidden-xs">{{(track.playcount / ctrl.totalPlaycount) * 100 | number:2}}%</td>
           <td class="text-center col-xs-2 visible-xs">{{track.return.dollars | currency:"$"}}</td>
         </tr>
       </tbody>
@@ -78,7 +80,8 @@
           <th class="text-center col-xs-3 visible-xs">Tracks</th>
           <th class="text-center col-xs-1">Playcount</th>
           <th class="text-center col-xs-2 hidden-xs">Return [$]</th>
-          <th class="text-center col-xs-2 hidden-xs">Return [€]</th>
+          <th class="text-center col-xs-1 hidden-xs">[€]</th>
+          <th class="text-center col-xs-1 hidden-xs">Percentage</th>
           <th class="text-center col-xs-2 visible-xs">Return</th>
         </tr>
       </thead>
@@ -93,7 +96,8 @@
           <td class="text-center col-xs-3 visible-xs">{{album.tracks.length}}</td>
           <td class="text-center col-xs-1">{{album.playcount}}</td>
           <td class="text-center col-xs-2 hidden-xs">{{album.return.dollars | currency:"$"}}</td>
-          <td class="text-center col-xs-2 hidden-xs">{{album.return.euros | currency:"€"}}</td>
+          <td class="text-center col-xs-1 hidden-xs">{{album.return.euros | currency:"€"}}</td>
+          <td class="text-center col-xs-1 hidden-xs">{{(album.playcount / ctrl.totalPlaycount) * 100 | number:2}}%</td>
           <td class="text-center col-xs-2 visible-xs">{{album.return.dollars | currency:"$"}}</td>
         </tr>
       </tbody>
@@ -120,7 +124,8 @@
           <th class="text-center col-xs-3 visible-xs">Tracks</th>
           <th class="text-center col-xs-1">Playcount</th>
           <th class="text-center col-xs-2 hidden-xs">Return [$]</th>
-          <th class="text-center col-xs-2 hidden-xs">Return [€]</th>
+          <th class="text-center col-xs-1 hidden-xs">[€]</th>
+          <th class="text-center col-xs-1 hidden-xs">Percentage</th>
           <th class="text-center col-xs-2 visible-xs">Return</th>
         </tr>
       </thead>
@@ -135,7 +140,8 @@
           <td class="text-center col-xs-3 visible-xs">{{artist.tracks.length}}</td>
           <td class="text-center col-xs-1">{{artist.playcount}}</td>
           <td class="text-center col-xs-2 hidden-xs">{{artist.return.dollars | currency:"$"}}</td>
-          <td class="text-center col-xs-2 hidden-xs">{{artist.return.euros | currency:"€"}}</td>
+          <td class="text-center col-xs-1 hidden-xs">{{artist.return.euros | currency:"€"}}</td>
+          <td class="text-center col-xs-1 hidden-xs">{{(artist.playcount / ctrl.totalPlaycount) * 100 | number:2}}%</td>
           <td class="text-center col-xs-2 visible-xs">{{artist.return.dollars | currency:"$"}}</td>
         </tr>
       </tbody>
